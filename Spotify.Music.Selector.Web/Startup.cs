@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Spotify.Music.Selector.Api;
+using System.Net.Http;
 
 namespace Spotify.Music.Selector.Web
 {
@@ -21,7 +23,9 @@ namespace Spotify.Music.Selector.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.AddHttpClient();
+            services.AddSingleton(typeof (SpotifyClient));
+            
             // In production, the React files will be served from this directory.
             services.AddSpaStaticFiles(configuration =>
             {
@@ -42,16 +46,11 @@ namespace Spotify.Music.Selector.Web
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
-            });
+            app.UseHttpsRedirection();
+            app.UseMvc();
 
             app.UseSpa(spa =>
             {

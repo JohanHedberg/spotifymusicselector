@@ -1,15 +1,4 @@
-export const TOGGLE_MAIN_MENU = 'TOGGLE_MAIN_MENU';
-export type TOGGLE_MAIN_MENU = typeof TOGGLE_MAIN_MENU;
-
-export interface ToggleMainMenu {
-    type: TOGGLE_MAIN_MENU;
-}
-
-export function toggleMainMenu(): ToggleMainMenu {
-    return {
-        type: TOGGLE_MAIN_MENU
-    };
-}
+import TrackData from '../types/track';
 
 export const SHOW_NOTIFICATION = 'SHOW_NOTIFICATION';
 export type SHOW_NOTIFICATION = typeof SHOW_NOTIFICATION;
@@ -26,6 +15,21 @@ export function showNotification(message: string): ShowNotification {
     };
 }
 
+export const SET_RECOMMENDATIONS = 'SET_RECOMMENDATIONS';
+export type SET_RECOMMENDATIONS = typeof SET_RECOMMENDATIONS;
+
+export interface SetRecommendations {
+    type: SET_RECOMMENDATIONS;
+    tracks: Array<TrackData>;
+}
+
+export function setRecommendations(tracks: Array<TrackData>): SetRecommendations {
+    return {
+        type: SET_RECOMMENDATIONS,
+        tracks
+    };
+}
+
 export const HIDE_NOTIFICATION = 'HIDE_NOTIFICATION';
 export type HIDE_NOTIFICATION = typeof HIDE_NOTIFICATION;
 
@@ -39,20 +43,6 @@ export function hideNotification(): HideNotification {
     };
 }
 
-export const AUTHENTICATE_USER = 'AUTHENTICATE_USER';
-export type AUTHENTICATE_USER = typeof AUTHENTICATE_USER;
-
-export interface AuthenticateUser {
-    type: AUTHENTICATE_USER;
-}
-
-export function authenticateUser(): AuthenticateUser {
-    return {
-        type: AUTHENTICATE_USER
-    };
-}
-
 export type ApplicationAction =
-    ToggleMainMenu |
-    AuthenticateUser |
-    ShowNotification | HideNotification;
+    ShowNotification | HideNotification |
+    SetRecommendations;
