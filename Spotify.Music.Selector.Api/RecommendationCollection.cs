@@ -6,5 +6,6 @@ namespace Spotify.Music.Selector.Api
 {
     public class RecommendationCollection
     {
+        public IEnumerable<Track> Tracks { get; set; }
     }
 }

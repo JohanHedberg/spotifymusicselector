@@ -6,15 +6,10 @@ export default function applicationReducer(
     action: Actions.ApplicationAction): ApplicationState {
 
     switch (action.type) {
-        case Actions.AUTHENTICATE_USER:
-            return {
-                ...state
-            };
-
-        case Actions.TOGGLE_MAIN_MENU:
+        case Actions.SET_RECOMMENDATIONS:
             return {
                 ...state,
-                mainMenuIsVisible: !state.mainMenuIsVisible
+                recommendations: action.tracks
             };
 
         case Actions.SHOW_NOTIFICATION:

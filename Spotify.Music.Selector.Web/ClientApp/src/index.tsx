@@ -9,6 +9,8 @@ import { InitialState } from './state/index';
 import App from './components/containers/app';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter } from 'react-router-dom';
+import MusicApi from '../src/api/music-api';
+import * as Actions from './actions/application-actions';
 
 const theme = createMuiTheme({
   palette: {
@@ -20,11 +22,11 @@ const theme = createMuiTheme({
     }
   },
   typography: {
-    
+
   }
 });
 
-// Create browser history to use in the Redux store
+// Create browser history to use in the Redux store.
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const history = createBrowserHistory({ basename: baseUrl! });
 
@@ -32,6 +34,10 @@ const history = createBrowserHistory({ basename: baseUrl! });
 const store = configureStore(history, InitialState);
 
 const rootElement = document.getElementById('root');
+
+MusicApi.getRecommendations('./').then(
+  (recommendations) => store.dispatch(Actions.setRecommendations(recommendations))
+);
 
 ReactDOM.render(
   <Provider store={store}>

@@ -17,7 +17,15 @@ namespace Spotify.Music.Selector.Web.Controllers
         public async Task<IHttpActionResult> GetTrack()
         {
             var track = await _spotifyClient.GetTrack();
+            
+            return Ok(track);
+        }
 
+        public async Task<IHttpActionResult> GetRecommendations()
+        {
+            var track = await _spotifyClient.GetTrack();
+
+            
             return Ok(track);
         }
     }

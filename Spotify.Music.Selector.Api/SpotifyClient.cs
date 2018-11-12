@@ -13,6 +13,8 @@ namespace Spotify.Music.Selector.Api
         private readonly string _clientSecret;
         private readonly HttpClient _httpClient;
 
+        public string AuthorizationCode { get; set; }
+
         public string AccessToken { get; set; }
 
         public SpotifyClient(
@@ -44,7 +46,27 @@ namespace Spotify.Music.Selector.Api
 
         public async Task<RecommendationCollection> GetRecommendations()
         {
-            throw new NotImplementedException();
+            var recommendations = new RecommendationCollection();
+
+            var fields = new Dictionary<string, string>
+            {
+                { "grant_type", "authorization_code" },
+                { "code", AuthorizationCode },
+                { "redirect_uri", _callbackUri },
+                { "client_id", _clientId },
+                { "client_secret", _clientSecret },
+            };
+
+            var response = await _httpClient
+                .PostAsync("https://accounts.spotify.com/api/token", new FormUrlEncodedContent(fields));
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                //var content = await response.Content.ReadAsStringAsync();
+                //return content;
+            }
+
+            return recommendations;
         }
 
         public async Task GetAuthorizationCode()
@@ -55,8 +77,14 @@ namespace Spotify.Music.Selector.Api
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                
+                AuthorizationCode = await response.Content.ReadAsStringAsync();
             }
+        }
+
+        public string GetAuthenticationUri()
+        {
+            var responseType = "code";
+            return $"https://accounts.spotify.com/authorize?client_id={_clientId}&redirect_uri={_callbackUri}&response_type={responseType}";
         }
 
         public async Task<string> GetAccessToken(string accessCode)
@@ -64,7 +92,7 @@ namespace Spotify.Music.Selector.Api
             var fields = new Dictionary<string, string>
             {
                 { "grant_type", "authorization_code" },
-                { "code", accessCode },
+                { "code", AuthorizationCode },
                 { "redirect_uri", _callbackUri },
                 { "client_id", _clientId },
                 { "client_secret", _clientSecret },
