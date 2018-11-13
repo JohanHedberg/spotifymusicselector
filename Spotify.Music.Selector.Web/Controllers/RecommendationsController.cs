@@ -1,11 +1,12 @@
-﻿using Spotify.Music.Selector.Api;
+﻿using Microsoft.AspNetCore.Mvc;
+using Spotify.Music.Selector.Api;
 using System.Threading.Tasks;
-using System.Web.Http;
 
 namespace Spotify.Music.Selector.Web.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
-    public class RecommendationsController : ApiController
+    public class RecommendationsController : ControllerBase
     {
         private readonly SpotifyClient _spotifyClient;
 
@@ -15,13 +16,8 @@ namespace Spotify.Music.Selector.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IHttpActionResult> Get()
+        public async Task<ActionResult> Get()
         {
-            if (string.IsNullOrEmpty(_spotifyClient.AuthorizationCode))
-            {
-                return Redirect(_spotifyClient.GetAuthenticationUri());
-            }
-
             var recommendations = await _spotifyClient.GetRecommendations();
 
             return Ok(recommendations);

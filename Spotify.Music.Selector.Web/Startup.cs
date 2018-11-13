@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Spotify.Music.Selector.Api;
 using System.Net.Http;
 
 namespace Spotify.Music.Selector.Web
@@ -22,15 +23,9 @@ namespace Spotify.Music.Selector.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            var spotifyClient = new Api.SpotifyClient(
-                new HttpClient(),
-                "http://localhost:50136/authentication/callback",
-                Configuration.GetValue<string>("Authentication:ClientId"),
-                Configuration.GetValue<string>("Authentication:ClientSecret"));
-
-            services.AddSingleton(spotifyClient);
-
+            services.AddHttpClient();
+            services.AddSingleton(typeof (SpotifyClient));
+            
             // In production, the React files will be served from this directory.
             services.AddSpaStaticFiles(configuration =>
             {
@@ -50,14 +45,12 @@ namespace Spotify.Music.Selector.Web
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-           
+
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             app.UseHttpsRedirection();
-            app.UseMvc(routes => {
-                routes.MapRoute("api_routes", "api/{controller}");
-            });
+            app.UseMvc();
 
             app.UseSpa(spa =>
             {

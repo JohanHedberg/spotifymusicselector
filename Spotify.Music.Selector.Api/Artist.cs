@@ -7,5 +7,6 @@ namespace Spotify.Music.Selector.Api
     public class Artist
     {
         public string Name { get; set; }
+        public string Id { get; set; }
     }
 }
