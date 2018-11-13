@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Spotify.Music.Selector.Api
 {
-    public class RecommendationCollection
+    public class Image
     {
-        public IEnumerable<Track> Tracks { get; set; }
+
     }
 }

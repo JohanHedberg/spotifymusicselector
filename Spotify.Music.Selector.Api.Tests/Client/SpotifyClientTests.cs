@@ -1,7 +1,10 @@
+using Microsoft.Extensions.Configuration;
+using Moq;
+using Spotify.Music.Selector.Api.Client;
 using System.Net.Http;
 using Xunit;
 
-namespace Spotify.Music.Selector.Api.Tests
+namespace Spotify.Music.Selector.Api.Tests.Client
 {
     public class SpotifyClientTests
     {
@@ -26,24 +29,23 @@ namespace Spotify.Music.Selector.Api.Tests
         [Fact]
         public async void GetAccessToken()
         {
-            var accessCode = "";
+            var httpClient = new HttpClient();
 
-            var result = await _subject.GetAccessToken(accessCode);
+            var result = await _subject.GetAccessToken(httpClient);
 
             Assert.NotNull(result);
         }
 
         private readonly SpotifyClient _subject;
+        private readonly Mock<IConfiguration> _configurationMock;
+        private readonly Mock<IHttpClientFactory> _httpClientFactoryMock;
 
         public SpotifyClientTests()
         {
-            var client = new HttpClient();
+            _configurationMock = new Mock<IConfiguration>();
+            _httpClientFactoryMock = new Mock<IHttpClientFactory>();
 
-            _subject = new SpotifyClient(
-                client,
-                callbackUri: "https://localhost:44346/authentication/callback", 
-                clientId: "",
-                clientSecret: ""
+            _subject = new SpotifyClient(_configurationMock.Object, _httpClientFactoryMock.Object);
         }
     }
 }

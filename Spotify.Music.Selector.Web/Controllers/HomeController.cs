@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Spotify.Music.Selector.Api;
+using Spotify.Music.Selector.Api.Client;
 
 namespace Spotify.Music.Selector.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly SpotifyClient _spotifyClient;
+        private readonly ISpotifyClient _spotifyClient;
 
-        public HomeController(SpotifyClient spotifyClient)
+        public HomeController(ISpotifyClient spotifyClient)
         {
             _spotifyClient = spotifyClient;
         }
@@ -21,7 +21,7 @@ namespace Spotify.Music.Selector.Web.Controllers
                 return Redirect(_spotifyClient.GetAuthenticationUri());
             }
 
-            return Redirect("/ClientApp/build");
+            return SinglePageApplication();
         }
 
         [HttpGet]
@@ -30,7 +30,12 @@ namespace Spotify.Music.Selector.Web.Controllers
         {
             _spotifyClient.AuthorizationCode = code;
 
-            return Redirect("/");
+            return SinglePageApplication();
+        }
+
+        private IActionResult SinglePageApplication()
+        {
+            return LocalRedirect("~/ClientApp/build");
         }
     }
 }

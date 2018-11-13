@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Spotify.Music.Selector.Api;
+using Spotify.Music.Selector.Api.Client;
 using System.Threading.Tasks;
 
 namespace Spotify.Music.Selector.Web.Controllers
@@ -8,9 +8,9 @@ namespace Spotify.Music.Selector.Web.Controllers
     [Route("api/[controller]")]
     public class RecommendationsController : ControllerBase
     {
-        private readonly SpotifyClient _spotifyClient;
+        private readonly ISpotifyClient _spotifyClient;
 
-        public RecommendationsController(SpotifyClient spotifyClient)
+        public RecommendationsController(ISpotifyClient spotifyClient)
         {
             _spotifyClient = spotifyClient;
         }

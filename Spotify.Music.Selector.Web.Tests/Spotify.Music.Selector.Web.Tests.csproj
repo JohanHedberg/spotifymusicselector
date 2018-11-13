@@ -5,6 +5,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Spotify.Music.Selector.Api\Spotify.Music.Selector.Api.csproj" />
+    <ProjectReference Include="..\Spotify.Music.Selector.Web\Spotify.Music.Selector.Web.csproj" />
   </ItemGroup>
+
 </Project>
