@@ -1,12 +1,12 @@
 using Microsoft.Extensions.Configuration;
 using Moq;
-using Spotify.Music.Selector.Api.Client;
+using Spotify.Music.Selector.Api.Services;
 using System.Net.Http;
 using Xunit;
 
-namespace Spotify.Music.Selector.Api.Tests.Client
+namespace Spotify.Music.Selector.Api.Tests.Services
 {
-    public class SpotifyClientTests
+    public class SpotifyServiceTests
     {
         [Fact]
         public void GetAlbum()
@@ -36,16 +36,16 @@ namespace Spotify.Music.Selector.Api.Tests.Client
             Assert.NotNull(result);
         }
 
-        private readonly SpotifyClient _subject;
+        private readonly SpotifyService _subject;
         private readonly Mock<IConfiguration> _configurationMock;
         private readonly Mock<IHttpClientFactory> _httpClientFactoryMock;
 
-        public SpotifyClientTests()
+        public SpotifyServiceTests()
         {
             _configurationMock = new Mock<IConfiguration>();
             _httpClientFactoryMock = new Mock<IHttpClientFactory>();
 
-            _subject = new SpotifyClient(_configurationMock.Object, _httpClientFactoryMock.Object);
+            _subject = new SpotifyService(_configurationMock.Object, _httpClientFactoryMock.Object);
         }
     }
 }

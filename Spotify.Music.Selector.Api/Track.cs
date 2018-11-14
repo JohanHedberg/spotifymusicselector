@@ -22,6 +22,6 @@ namespace Spotify.Music.Selector.Api
         public string Id { get; set; }
 
         [JsonProperty(PropertyName = "available_markets")]
-        public IEnumerable<Artist> AvailableMarkets { get; set; }
+        public IEnumerable<string> AvailableMarkets { get; set; }
     }
 }

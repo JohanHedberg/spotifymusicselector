@@ -13,5 +13,12 @@ namespace Spotify.Music.Selector.Api
 
         [JsonProperty(PropertyName = "artists")]
         public IEnumerable<Artist> Artists { get; set; }
+
+
+        [JsonProperty(PropertyName = "genres")]
+        public IEnumerable<string> Genres { get; set; }
+
+        [JsonProperty(PropertyName = "images")]
+        public IEnumerable<Image> Images { get; set; }
     }
 }

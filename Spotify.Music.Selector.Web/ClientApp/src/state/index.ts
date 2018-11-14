@@ -16,36 +16,7 @@ export const InitialState: StoreState = {
         mainMenuIsVisible: true,
         notificationBarIsVisible: false,
         notificationMessage: '',
-        recommendations: [{
-            name: 'Smells Like Teen Spirit',
-            artist: 'Nirvana',
-            img: 'https://is3-ssl.mzstatic.com/image/thumb/Features/d0/cc/62/dj.nanioukp.jpg/1200x630bb.jpg'
-        },
-        {
-            name: 'Smells Like Teen Spirit',
-            artist: 'Nirvana',
-            img: 'https://is3-ssl.mzstatic.com/image/thumb/Features/d0/cc/62/dj.nanioukp.jpg/1200x630bb.jpg'
-        },
-        {
-            name: 'Smells Like Teen Spirit',
-            artist: 'Nirvana',
-            img: 'https://is3-ssl.mzstatic.com/image/thumb/Features/d0/cc/62/dj.nanioukp.jpg/1200x630bb.jpg'
-        },
-        {
-            name: 'Smells Like Teen Spirit',
-            artist: 'Nirvana',
-            img: 'https://is3-ssl.mzstatic.com/image/thumb/Features/d0/cc/62/dj.nanioukp.jpg/1200x630bb.jpg'
-        },
-        {
-            name: 'Smells Like Teen Spirit',
-            artist: 'Nirvana',
-            img: 'https://is3-ssl.mzstatic.com/image/thumb/Features/d0/cc/62/dj.nanioukp.jpg/1200x630bb.jpg'
-        },
-        {
-            name: 'Smells Like Teen Spirit',
-            artist: 'Nirvana',
-            img: 'https://is3-ssl.mzstatic.com/image/thumb/Features/d0/cc/62/dj.nanioukp.jpg/1200x630bb.jpg'
-        }]
+        recommendations: []
     }
 };
 

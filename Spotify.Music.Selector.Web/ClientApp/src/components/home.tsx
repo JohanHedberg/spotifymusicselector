@@ -36,63 +36,65 @@ const Home = (props: Props) => {
                     <Typography variant="h3" gutterBottom>
                         Who's your favorite?
                   </Typography>
-                    <Grid
-                        container
-                        spacing={16}
-                    >
-                        <Grid item xs={6}>
-                            <Card
-                                square
-                            >
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.media}
-                                        image={props.recommendations[0].img}
-                                        title={props.recommendations[0].name}
-                                    />
-                                    <CardContent>
-                                        <Typography
-                                            variant="body2"
-                                            gutterBottom
-                                        >
-                                            {props.recommendations[0].artist}
-                                        </Typography>
-                                        <Typography
-                                            variant="body1"
-                                        >
-                                            {props.recommendations[0].name}
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
+                    {props.recommendations.length > 1 ?
+                        <Grid
+                            container
+                            spacing={16}
+                        >
+                            <Grid item xs={6}>
+                                <Card
+                                    square
+                                >
+                                    <CardActionArea>
+                                        <CardMedia
+                                            className={classes.media}
+                                            image={props.recommendations[0].album.images[0].url}
+                                            title={props.recommendations[0].name}
+                                        />
+                                        <CardContent>
+                                            <Typography
+                                                variant="body2"
+                                                gutterBottom
+                                            >
+                                                {props.recommendations[0].album.name}
+                                            </Typography>
+                                            <Typography
+                                                variant="body1"
+                                            >
+                                                {props.recommendations[0].name}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Card
+                                    square
+                                >
+                                    <CardActionArea>
+                                        <CardMedia
+                                            className={classes.media}
+                                            image={props.recommendations[1].album.images[0].url}
+                                            title={props.recommendations[1].name}
+                                        />
+                                        <CardContent>
+                                            <Typography
+                                                variant="body2"
+                                                gutterBottom
+                                            >
+                                                {props.recommendations[0].album.name}
+                                            </Typography>
+                                            <Typography
+                                                variant="body1"
+                                            >
+                                                {props.recommendations[0].name}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                            <Card
-                                square
-                            >
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.media}
-                                        image={props.recommendations[0].img}
-                                        title={props.recommendations[0].name}
-                                    />
-                                    <CardContent>
-                                        <Typography
-                                            variant="body2"
-                                            gutterBottom
-                                        >
-                                            {props.recommendations[0].artist}
-                                        </Typography>
-                                        <Typography
-                                            variant="body1"
-                                        >
-                                            {props.recommendations[0].name}
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                        </Grid>
-                    </Grid>
+                        : null}
                 </Paper>
                 <Paper
                     square
@@ -109,18 +111,27 @@ const Home = (props: Props) => {
                         container
                         spacing={16}
                     >
-                        {props.recommendations.map((item, index: number) => (
+                        {props.recommendations.map((track, index: number) => (
                             <Grid item key={index}>
                                 <Card className={classes.card} square>
                                     <CardActionArea>
                                         <CardMedia
                                             className={classes.media}
-                                            image={item.img}
-                                            title={item.name}
+                                            image={track.album.images[0].url}
+                                            title={track.name}
                                         />
                                         <CardContent>
-                                            <Typography variant="body2" gutterBottom>{item.artist}</Typography>
-                                            <Typography variant="body1">{item.name}</Typography>
+                                            <Typography
+                                                variant="body2"
+                                                gutterBottom
+                                            >
+                                                {track.album.name}
+                                            </Typography>
+                                            <Typography
+                                                variant="body1"
+                                            >
+                                                {track.name}
+                                            </Typography>
                                         </CardContent>
                                     </CardActionArea>
                                 </Card>

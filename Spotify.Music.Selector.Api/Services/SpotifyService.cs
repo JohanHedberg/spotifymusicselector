@@ -6,33 +6,26 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Spotify.Music.Selector.Api.Client
+namespace Spotify.Music.Selector.Api.Services
 {
-    public class SpotifyClient : ISpotifyClient
+    /// <summary>
+    /// Service used for communicating with the Spotify web api.
+    /// </summary>
+    public class SpotifyService : ISpotifyService
     {
+        private string _authorizationCode;
         private readonly string _callbackUri;
         private readonly string _clientId;
         private readonly string _clientSecret;
         private readonly IHttpClientFactory _httpClientFactory;
+        private Authorization.AccessToken _accessToken;
 
         /// <summary>
-        /// Gets or sets the authorization code used for fetching an
-        /// authorization token from Spotify.
-        /// </summary>
-        public string AuthorizationCode { get; set; }
-
-        /// <summary>
-        /// Gets the access token provided by Spotify needed for consuming
-        /// their WEB API.
-        /// </summary>
-        public string AccessToken { get; private set; }
-
-        /// <summary>
-        /// Creates an instance of a <see cref="SpotifyClient"/>.
+        /// Creates an instance of a <see cref="SpotifyService"/>.
         /// </summary>
         /// <param name="configuration">The configuration object holding the authentication details.</param>
         /// <param name="httpClientFactory">An <see cref="IHttpClientFactory"/> used for creating an HttpClient.</param>
-        public SpotifyClient(
+        public SpotifyService(
             IConfiguration configuration,
             IHttpClientFactory httpClientFactory)
         {
@@ -42,6 +35,8 @@ namespace Spotify.Music.Selector.Api.Client
             _clientId = configuration.GetValue<string>("Authentication:ClientId");
             _clientSecret = configuration.GetValue<string>("Authentication:ClientSecret");
         }
+
+        public bool RequiresAuthentication => string.IsNullOrEmpty(_authorizationCode);
 
         public async Task<Artist> GetArtist()
         {
@@ -66,9 +61,9 @@ namespace Spotify.Music.Selector.Api.Client
         {
             var client = _httpClientFactory.CreateClient();
 
-            AccessToken = await GetAccessToken(client);
+            _accessToken = await GetAccessToken(client);
 
-            var response = await client.GetAsync("https://api.spotify.com/v1/recommendations/available-genre-seeds?access_token={AccessToken}");
+            var response = await client.GetAsync($"https://api.spotify.com/v1/recommendations/available-genre-seeds?access_token={_accessToken.Token}");
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -84,15 +79,15 @@ namespace Spotify.Music.Selector.Api.Client
         {
             var client = _httpClientFactory.CreateClient();
 
-            AccessToken = await GetAccessToken(client);
+            _accessToken = await GetAccessToken(client);
 
             var fields = new Dictionary<string, string>
             {
-                { "access_token", AccessToken},
+                { "access_token", _accessToken.Token},
                 { "seed_genres", "blues" }
             };
 
-            var response = await client.GetAsync("https://api.spotify.com/v1/recommendations?access_token={AccessToken}&seed_genres=blues");
+            var response = await client.GetAsync($"https://api.spotify.com/v1/recommendations?access_token={_accessToken.Token}&seed_genres=rock");
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -113,17 +108,30 @@ namespace Spotify.Music.Selector.Api.Client
             return $"https://accounts.spotify.com/authorize?client_id={_clientId}&redirect_uri={_callbackUri}&response_type={responseType}";
         }
 
+        public void SetAuthorizationCode(string code)
+        {
+            _authorizationCode = code;
+            _accessToken = null;
+        }
+
         /// <summary>
         /// Requests an access token from Spotify.
         /// </summary>
         /// <param name="httpClient"></param>
         /// <returns></returns>
-        public async Task<string> GetAccessToken(HttpClient httpClient)
+        public async Task<Authorization.AccessToken> GetAccessToken(HttpClient httpClient)
         {
+            if (_accessToken != null && !_accessToken.HasExpired())
+            {
+                // If there is a token available already there is no need to make another roundtrip to Spotify
+                // for fetching a new one.
+                return _accessToken;
+            }
+
             var fields = new Dictionary<string, string>
             {
                 { "grant_type", "authorization_code" },
-                { "code", AuthorizationCode },
+                { "code", _authorizationCode },
                 { "redirect_uri", _callbackUri },
                 { "client_id", _clientId },
                 { "client_secret", _clientSecret },
@@ -134,11 +142,11 @@ namespace Spotify.Music.Selector.Api.Client
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                dynamic content = await response.Content.ReadAsAsync<Authentication.AccessTokenResponse>();
-                return content.Token;
+                dynamic content = await response.Content.ReadAsAsync<Authorization.AccessToken>();
+                return content;
             }
 
-            return string.Empty;
+            return null;
         }
     }
 }

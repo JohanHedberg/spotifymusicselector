@@ -13,12 +13,12 @@ namespace Spotify.Music.Selector.Web.Tests.Controllers
             var result = _subject.Get();
         }
 
-        private readonly Mock<ISpotifyClient> _spotifyClientMock;
+        private readonly Mock<ISpotifyService> _spotifyClientMock;
         private readonly RecommendationsController _subject;
 
         public RecommendationControllerTests()
         {
-            _spotifyClientMock = new Mock<ISpotifyClient>();
+            _spotifyClientMock = new Mock<ISpotifyService>();
             _subject = new RecommendationsController(_spotifyClientMock.Object);
         }
     }

@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Spotify.Music.Selector.Api.Client
+namespace Spotify.Music.Selector.Api.Services
 {
-    public interface ISpotifyClient
+    public interface ISpotifyService
     {
-        string AccessToken { get; }
+        bool RequiresAuthentication { get; }
 
-        string AuthorizationCode { get; set; }
-
-        Task<string> GetAccessToken(HttpClient httpClient);
+        void SetAuthorizationCode(string code);
 
         Task<Album> GetAlbum();
 

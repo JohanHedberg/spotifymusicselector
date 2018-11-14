@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Spotify.Music.Selector.Api.Client;
+using Spotify.Music.Selector.Api.Services;
 
 namespace Spotify.Music.Selector.Web
 {
@@ -22,7 +22,7 @@ namespace Spotify.Music.Selector.Web
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddHttpClient();
-            services.AddSingleton<ISpotifyClient>();
+            services.AddSingleton(typeof(ISpotifyService), typeof(SpotifyService));
 
             // In production, the React files will be served from this directory.
             services.AddSpaStaticFiles(configuration =>
@@ -49,6 +49,20 @@ namespace Spotify.Music.Selector.Web
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.Use(async (context, next) => {
+                var spotifyService = context.RequestServices.GetService<ISpotifyService>();
+                if (spotifyService.RequiresAuthentication)
+                {
+                    // If the user has not granted access to her Spotify account yet,
+                    // redirect to Spotify for login and prevent pipeline from reaching
+                    // the SPA front-end client.
+                    context.Response.Redirect(spotifyService.GetAuthenticationUri());
+                    return;
+                }
+
+                await next();
+            });
 
             app.UseSpa(spa =>
             {
