@@ -2,12 +2,12 @@
 
 namespace Spotify.Music.Selector.Api
 {
-    public class ReceommendationSeed
+    public class RecommendationSeed
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
         [JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
+        public RecommendationSeedType Type { get; set; }
     }
 }

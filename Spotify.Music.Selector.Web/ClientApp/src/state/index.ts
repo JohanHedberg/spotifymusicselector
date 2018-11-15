@@ -9,6 +9,8 @@ export interface ApplicationState {
 
 export interface QuestionsState {
     activeStep: number;
+    genre: string;
+    availableGenres: Array<string>;
 }
 
 export interface StoreState {
@@ -24,7 +26,9 @@ export const InitialState: StoreState = {
         recommendations: []
     },
     questions: {
-        activeStep: 0
+        activeStep: 0,
+        genre: '',
+        availableGenres: []
     }
 };
 

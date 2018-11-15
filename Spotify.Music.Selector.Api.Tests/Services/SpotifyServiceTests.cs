@@ -9,24 +9,6 @@ namespace Spotify.Music.Selector.Api.Tests.Services
     public class SpotifyServiceTests
     {
         [Fact]
-        public void GetAlbum()
-        {
-            var result = _subject.GetAlbum();
-        }
-
-        [Fact]
-        public void GetAGetArtistlbum()
-        {
-            var result = _subject.GetArtist();
-        }
-
-        [Fact]
-        public void GetRecommendations()
-        {
-            var result = _subject.GetRecommendations();
-        }
-
-        [Fact]
         public async void GetAccessToken()
         {
             var httpClient = new HttpClient();

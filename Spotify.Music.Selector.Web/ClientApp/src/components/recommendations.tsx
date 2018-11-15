@@ -20,6 +20,10 @@ export type Props = RecommendationsProps & RecommendationsDispatchProps;
 const Recommendations = (props: Props) => {
     const { classes } = props;
 
+    if (props.recommendations.length === 0) {
+        return null;
+    }
+
     return (
         <Paper
             square

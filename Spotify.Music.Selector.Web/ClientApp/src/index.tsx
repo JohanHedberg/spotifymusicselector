@@ -10,7 +10,7 @@ import App from './components/containers/app';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import MusicApi from '../src/api/music-api';
-import * as Actions from './actions/application-actions';
+import * as Actions from './actions/questions-actions';
 
 const theme = createMuiTheme({
   palette: {
@@ -39,8 +39,8 @@ const store = configureStore(history, InitialState);
 
 const rootElement = document.getElementById('root');
 
-MusicApi.getRecommendations('./').then(
-  (recommendations) => store.dispatch(Actions.setRecommendations(recommendations))
+MusicApi.getGenres('./').then(
+  (genres) => store.dispatch(Actions.setAvailableGenres(genres))
 );
 
 ReactDOM.render(

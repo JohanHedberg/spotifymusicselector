@@ -9,16 +9,10 @@ namespace Spotify.Music.Selector.Api.Services
 
         void SetAuthorizationCode(string code);
 
-        Task<Album> GetAlbum();
-
-        Task<Artist> GetArtist();
-
         string GetAuthenticationUri();
 
         Task<IEnumerable<string>> GetAvailableGenreSeeds();
 
-        Task<RecommendationsResponse> GetRecommendations();
-
-        Task<Track> GetTrack();
+        Task<RecommendationsResponse> GetRecommendations(IEnumerable<RecommendationSeed> seeds);
     }
 }

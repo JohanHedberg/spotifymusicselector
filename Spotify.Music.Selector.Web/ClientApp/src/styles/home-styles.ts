@@ -2,7 +2,9 @@ import { createStyles, Theme } from '@material-ui/core';
 
 const styles = ({ palette, spacing, breakpoints }: Theme) => createStyles({
   root: {
-    marginTop: 20
+    marginTop: 20,
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   paper: {
     padding: 20,

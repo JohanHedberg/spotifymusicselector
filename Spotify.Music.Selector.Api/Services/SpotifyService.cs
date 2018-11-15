@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Spotify.Music.Selector.Api.Services
@@ -38,21 +38,6 @@ namespace Spotify.Music.Selector.Api.Services
 
         public bool RequiresAuthentication => string.IsNullOrEmpty(_authorizationCode);
 
-        public async Task<Artist> GetArtist()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Track> GetTrack()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Album> GetAlbum()
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Gets a collection of all available genres that can be used for fetching recommendations.
         /// </summary>
@@ -67,27 +52,21 @@ namespace Spotify.Music.Selector.Api.Services
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                dynamic content = await response.Content.ReadAsAsync<IEnumerable<string>>();
+                dynamic content = await response.Content.ReadAsAsync<AvailableGenreSeedsResponse>();
 
-                return content;
+                return content.Genres;
             }
 
             return new string[0];
         }
 
-        public async Task<RecommendationsResponse> GetRecommendations()
+        public async Task<RecommendationsResponse> GetRecommendations(IEnumerable<RecommendationSeed> seeds)
         {
             var client = _httpClientFactory.CreateClient();
 
             _accessToken = await GetAccessToken(client);
 
-            var fields = new Dictionary<string, string>
-            {
-                { "access_token", _accessToken.Token},
-                { "seed_genres", "blues" }
-            };
-
-            var response = await client.GetAsync($"https://api.spotify.com/v1/recommendations?access_token={_accessToken.Token}&seed_genres=rock");
+            var response = await client.GetAsync($"https://api.spotify.com/v1/recommendations?access_token={_accessToken.Token}{GetSeedQuery(seeds)}");
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -100,6 +79,56 @@ namespace Spotify.Music.Selector.Api.Services
             {
                 Tracks = Enumerable.Empty<Track>()
             };
+        }
+
+        public string GetSeedQuery(IEnumerable<RecommendationSeed> seeds)
+        {
+            var genres = new List<string>();
+            var artists = new List<string>();
+            var albums = new List<string>();
+
+            foreach (var seed in seeds)
+            {
+                switch (seed.Type)
+                {
+                    case RecommendationSeedType.Artist:
+                        artists.Add(seed.Id);
+                        break;
+
+                    case RecommendationSeedType.Album:
+                        albums.Add(seed.Id);
+                        break;
+
+                    case RecommendationSeedType.Genre:
+                        genres.Add(seed.Id);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            var stringBuilder = new StringBuilder();
+
+            if (genres.Any())
+            {
+                stringBuilder.Append("&seed_genres=");
+                stringBuilder.Append(string.Join(',', genres));
+            }
+
+            //if (artists.Any())
+            //{
+            //    stringBuilder.Append("&seed_artists=");
+            //    stringBuilder.Append(string.Join(',', artists));
+            //}
+
+            if (albums.Any())
+            {
+                stringBuilder.Append("&seed_albums=");
+                stringBuilder.Append(string.Join(',', albums));
+            }
+
+            return stringBuilder.ToString();
         }
 
         public string GetAuthenticationUri()

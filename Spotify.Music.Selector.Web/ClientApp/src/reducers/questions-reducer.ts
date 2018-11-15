@@ -12,6 +12,18 @@ export default function questionsReducer(
                 activeStep: action.index
             };
 
+        case Actions.SET_AVAILABLE_GENRES:
+            return {
+                ...state,
+                availableGenres: action.genres
+            };
+
+        case Actions.SET_SELECTED_GENRE:
+            return {
+                ...state,
+                genre: action.genre
+            };
+
         default:
             return state;
     }

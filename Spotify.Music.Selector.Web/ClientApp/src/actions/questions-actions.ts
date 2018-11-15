@@ -13,5 +13,35 @@ export function setActiveStep(index: number): SetActiveStep {
     };
 }
 
+export const SET_AVAILABLE_GENRES = 'SET_AVAILABLE_GENRES';
+export type SET_AVAILABLE_GENRES = typeof SET_AVAILABLE_GENRES;
+
+export interface SetAvailableGenres {
+    type: SET_AVAILABLE_GENRES;
+    genres: Array<string>;
+}
+
+export function setAvailableGenres(genres: Array<string>): SetAvailableGenres {
+    return {
+        type: SET_AVAILABLE_GENRES,
+        genres
+    };
+}
+
+export const SET_SELECTED_GENRE = 'SET_SELECTED_GENRE';
+export type SET_SELECTED_GENRE = typeof SET_SELECTED_GENRE;
+
+export interface SetSelectedGenre {
+    type: SET_SELECTED_GENRE;
+    genre: string;
+}
+
+export function setSelectedGenre(genre: string): SetSelectedGenre {
+    return {
+        type: SET_SELECTED_GENRE,
+        genre
+    };
+}
+
 export type QuestionsAction =
-    SetActiveStep;
+    SetActiveStep | SetAvailableGenres | SetSelectedGenre;
