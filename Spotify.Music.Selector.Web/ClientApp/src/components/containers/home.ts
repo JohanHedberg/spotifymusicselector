@@ -12,7 +12,6 @@ interface ContainerProps extends WithStyles<typeof Styles> {
 
 export function mapStateToProps(state: StoreState, ownProps: ContainerProps): HomeProps {
     return {
-        recommendations: state.application.recommendations,
         classes: ownProps.classes
     };
 }

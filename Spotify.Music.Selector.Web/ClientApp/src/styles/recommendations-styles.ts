@@ -2,12 +2,13 @@ import { createStyles, Theme } from '@material-ui/core';
 
 const styles = ({ palette, spacing, breakpoints }: Theme) => createStyles({
     root: {
-        backgroundColor: palette.primary.main
+
     },
-    title: {
-        flex: 1,
-        color: palette.primary.contrastText
-    }
+    paper: {
+        marginTop: 15,
+        padding: 20,
+        maxWidth: 700,
+    },
 });
 
 export default styles;

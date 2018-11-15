@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Styles from '../styles/upper-navigation-menu-styles';
 import { WithStyles } from '@material-ui/core/styles';
+import ShareIcon from '@material-ui/icons/Share';
 
 export interface UpperNavigationMenuProps extends WithStyles<typeof Styles> {
 
@@ -20,14 +21,13 @@ const UpperNavigationMenu = (props: Props) => {
 
     return (
         <AppBar
-            color="primary"
             className={classes.root}
         >
             <Toolbar>
+                <ShareIcon />
                 <Typography
-                    variant="title"
-                    color="inherit"
-                    style={{ flex: 1 }}
+                    variant="h6"
+                    className={classes.title}
                     noWrap
                 >
                     Spotify Music Selector

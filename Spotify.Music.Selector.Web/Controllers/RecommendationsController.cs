@@ -25,5 +25,13 @@ namespace Spotify.Music.Selector.Web.Controllers
 
             return Ok(models);
         }
+
+        [HttpGet]
+        public async Task<ActionResult> Seeds()
+        {
+            var seeds = await _spotifyService.GetAvailableGenreSeeds();
+
+            return Ok(seeds);
+        }
     }
 }

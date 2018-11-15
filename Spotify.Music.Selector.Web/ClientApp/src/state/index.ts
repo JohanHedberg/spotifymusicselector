@@ -7,8 +7,13 @@ export interface ApplicationState {
     recommendations: Array<TrackData>;
 }
 
+export interface QuestionsState {
+    activeStep: number;
+}
+
 export interface StoreState {
     application: ApplicationState;
+    questions: QuestionsState;
 }
 
 export const InitialState: StoreState = {
@@ -17,6 +22,9 @@ export const InitialState: StoreState = {
         notificationBarIsVisible: false,
         notificationMessage: '',
         recommendations: []
+    },
+    questions: {
+        activeStep: 0
     }
 };
 

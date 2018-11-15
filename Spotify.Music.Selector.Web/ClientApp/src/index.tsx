@@ -15,14 +15,18 @@ import * as Actions from './actions/application-actions';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#01579b'
+      main: '#263238',
+      light: '#4f5b62',
+      dark: '#000a12'
     },
     secondary: {
-      main: '#ff8f00'
+      main: '#8ac148',
+      light: '#bdf478',
+      dark: '#599014'
     }
   },
   typography: {
-
+    useNextVariants: true
   }
 });
 
