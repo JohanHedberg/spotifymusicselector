@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Spotify.Music.Selector.Api
 {
     /// <summary>
-    /// Represents a music Track.
+    /// Represents a music track.
     /// </summary>
     /// <see cref="https://developer.spotify.com/documentation/web-api/reference/object-model/#track-object-full"/>
     public class Track

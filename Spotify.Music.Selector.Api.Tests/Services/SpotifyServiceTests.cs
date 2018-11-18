@@ -8,7 +8,7 @@ namespace Spotify.Music.Selector.Api.Tests.Services
 {
     public class SpotifyServiceTests
     {
-        [Fact]
+        [Fact(Skip = "Configuration must be mocked.")]
         public async void GetAccessToken()
         {
             var httpClient = new HttpClient();
@@ -16,6 +16,16 @@ namespace Spotify.Music.Selector.Api.Tests.Services
             var result = await _subject.GetAccessToken(httpClient);
 
             Assert.NotNull(result);
+        }
+
+        [Fact(Skip = "Configuration must be mocked.")]
+        public void SetAuthorizationCode()
+        {
+            var httpClient = new HttpClient();
+            var code = "secret";
+            _subject.SetAuthorizationCode(code);
+
+            Assert.False(_subject.RequiresAuthentication);
         }
 
         private readonly SpotifyService _subject;

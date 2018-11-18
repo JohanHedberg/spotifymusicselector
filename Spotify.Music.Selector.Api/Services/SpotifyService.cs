@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Spotify.Music.Selector.Api.Services
 {
     /// <summary>
-    /// Service used for communicating with the Spotify web api.
+    /// Default implementation of an <see cref="ISpotifyService"/>.
     /// </summary>
     public class SpotifyService : ISpotifyService
     {
@@ -36,6 +36,10 @@ namespace Spotify.Music.Selector.Api.Services
             _clientSecret = configuration.GetValue<string>("Authentication:ClientSecret");
         }
 
+        /// <summary>
+        /// Determines whether the user must login in to Spotify and
+        /// grant the application access to their web API.
+        /// </summary>
         public bool RequiresAuthentication => string.IsNullOrEmpty(_authorizationCode);
 
         /// <summary>
@@ -60,6 +64,12 @@ namespace Spotify.Music.Selector.Api.Services
             return new string[0];
         }
 
+        /// <summary>
+        /// Gets recommendations from Spotify based upon provided search criteria.
+        /// </summary>
+        /// <param name="seeds">Search criteria used for getting recommendations.</param>
+        /// <returns>An <see cref="RecommendationsResponse"/> containing a collection
+        /// of <see cref="Track"/>s recommended by Spotify.</returns>
         public async Task<RecommendationsResponse> GetRecommendations(IEnumerable<RecommendationSeed> seeds)
         {
             var client = _httpClientFactory.CreateClient();
@@ -81,6 +91,13 @@ namespace Spotify.Music.Selector.Api.Services
             };
         }
 
+        /// <summary>
+        /// Gets the string used for stating the seeds when fetching
+        /// music recommendations.
+        /// </summary>
+        /// <param name="seeds">A collection of <see cref="RecommendationSeed"/>s.</param>
+        /// <returns>A formatted string grouping the seed values so they can
+        /// be used according to the Spotify web API documentation.</returns>
         public string GetSeedQuery(IEnumerable<RecommendationSeed> seeds)
         {
             var genres = new List<string>();
@@ -131,12 +148,23 @@ namespace Spotify.Music.Selector.Api.Services
             return stringBuilder.ToString();
         }
 
+        /// <summary>
+        /// Gets the URI location where the user can login in and grant
+        /// the application access to Spotify.
+        /// </summary>
+        /// <returns>The URI to the Spotify login page.</returns>
         public string GetAuthenticationUri()
         {
             var responseType = "code";
             return $"https://accounts.spotify.com/authorize?client_id={_clientId}&redirect_uri={_callbackUri}&response_type={responseType}";
         }
 
+        /// <summary>
+        /// Sets the authorization code that is used for issueing an
+        /// access token with Spotify.
+        /// </summary>
+        /// <param name="code">The authorization code provided by Spotify after
+        /// the user has granted access.</param>
         public void SetAuthorizationCode(string code)
         {
             _authorizationCode = code;

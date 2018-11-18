@@ -1,5 +1,5 @@
 ﻿using Moq;
-using Spotify.Music.Selector.Api.Client;
+using Spotify.Music.Selector.Api.Services;
 using Spotify.Music.Selector.Web.Controllers;
 using Xunit;
 
@@ -10,7 +10,9 @@ namespace Spotify.Music.Selector.Web.Tests.Controllers
         [Fact]
         public void Get()
         {
-            var result = _subject.Get();
+            var genre = "rock";
+            var artistId = "13654";
+            var result = _subject.Get(genre, artistId);
         }
 
         private readonly Mock<ISpotifyService> _spotifyClientMock;
