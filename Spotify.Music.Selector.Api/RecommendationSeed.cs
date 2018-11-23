@@ -3,13 +3,13 @@
 namespace Spotify.Music.Selector.Api
 {
     /// <summary>
-    /// Criteria used when fecthing music recommendations.
+    /// Criteria used when fetching music recommendations.
     /// </summary>
     public class RecommendationSeed
     {
         /// <summary>
         /// The identifier of the seed. Depending on the seed type this could
-        /// be the if of an artist or the name of a genre.
+        /// be the id of an artist or the name of a genre.
         /// </summary>
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
