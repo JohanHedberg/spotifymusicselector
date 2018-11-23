@@ -6,7 +6,7 @@ class MusicApi {
         genre?: string,
         artistId?: string
     ) => {
-        const url = `${baseApiUrl}api/recommendations?genre=${genre}&artistId=${artistId}`;
+        const url = `${baseApiUrl}api/recommendations?genre=${genre}`;
         const response = await axios.get(url);
 
         return response.data;

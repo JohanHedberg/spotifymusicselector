@@ -13,21 +13,21 @@ import MusicApi from '../src/api/music-api';
 import * as Actions from './actions/questions-actions';
 
 const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#263238',
-      light: '#4f5b62',
-      dark: '#000a12'
+    palette: {
+        primary: {
+            main: '#263238',
+            light: '#4f5b62',
+            dark: '#000a12'
+        },
+        secondary: {
+            main: '#8ac148',
+            light: '#bdf478',
+            dark: '#599014'
+        }
     },
-    secondary: {
-      main: '#8ac148',
-      light: '#bdf478',
-      dark: '#599014'
+    typography: {
+        useNextVariants: true
     }
-  },
-  typography: {
-    useNextVariants: true
-  }
 });
 
 // Create browser history to use in the Redux store.
@@ -40,18 +40,18 @@ const store = configureStore(history, InitialState);
 const rootElement = document.getElementById('root');
 
 MusicApi.getGenres('./').then(
-  (genres) => store.dispatch(Actions.setAvailableGenres(genres))
+    (genres) => store.dispatch(Actions.setAvailableGenres(genres))
 );
 
 ReactDOM.render(
-  <Provider store={store}>
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </MuiThemeProvider>
-  </Provider>,
-  rootElement);
+    <Provider store={store}>
+        <MuiThemeProvider theme={theme}>
+            <CssBaseline />
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </MuiThemeProvider>
+    </Provider>,
+    rootElement);
 
 registerServiceWorker();

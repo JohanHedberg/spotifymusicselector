@@ -2,11 +2,13 @@ import { createStyles, Theme } from '@material-ui/core';
 
 const styles = ({ palette, spacing, breakpoints }: Theme) => createStyles({
     root: {
-        padding: 12,
+
     },
     paper: {
         padding: 20,
         maxWidth: 700,
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     backButton: {
         marginRight: spacing.unit,
@@ -26,12 +28,13 @@ const styles = ({ palette, spacing, breakpoints }: Theme) => createStyles({
         marginTop: 20
     },
     chip: {
-        // backgroundColor: palette.primary.main,
-        // color: palette.common.white
+
     },
     chipAvatar: {
-        // backgroundColor: palette.primary.main,
-        // color: palette.common.white
+
+    },
+    slider: {
+        padding: '22px 0px',
     }
 });
 

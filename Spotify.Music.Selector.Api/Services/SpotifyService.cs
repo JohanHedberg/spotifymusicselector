@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Spotify.Music.Selector.Api.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -76,7 +77,7 @@ namespace Spotify.Music.Selector.Api.Services
 
             _accessToken = await GetAccessToken(client);
 
-            var response = await client.GetAsync($"https://api.spotify.com/v1/recommendations?access_token={_accessToken.Token}{GetSeedQuery(seeds)}");
+            var response = await client.GetAsync($"https://api.spotify.com/v1/recommendations?access_token={_accessToken.Token}{seeds.GetSeedQuery()}");
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -89,63 +90,6 @@ namespace Spotify.Music.Selector.Api.Services
             {
                 Tracks = Enumerable.Empty<Track>()
             };
-        }
-
-        /// <summary>
-        /// Gets the string used for stating the seeds when fetching
-        /// music recommendations.
-        /// </summary>
-        /// <param name="seeds">A collection of <see cref="RecommendationSeed"/>s.</param>
-        /// <returns>A formatted string grouping the seed values so they can
-        /// be used according to the Spotify web API documentation.</returns>
-        public string GetSeedQuery(IEnumerable<RecommendationSeed> seeds)
-        {
-            var genres = new List<string>();
-            var artists = new List<string>();
-            var albums = new List<string>();
-
-            foreach (var seed in seeds)
-            {
-                switch (seed.Type)
-                {
-                    case RecommendationSeedType.Artist:
-                        artists.Add(seed.Id);
-                        break;
-
-                    case RecommendationSeedType.Album:
-                        albums.Add(seed.Id);
-                        break;
-
-                    case RecommendationSeedType.Genre:
-                        genres.Add(seed.Id);
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-            var stringBuilder = new StringBuilder();
-
-            if (genres.Any())
-            {
-                stringBuilder.Append("&seed_genres=");
-                stringBuilder.Append(string.Join(',', genres));
-            }
-
-            //if (artists.Any())
-            //{
-            //    stringBuilder.Append("&seed_artists=");
-            //    stringBuilder.Append(string.Join(',', artists));
-            //}
-
-            if (albums.Any())
-            {
-                stringBuilder.Append("&seed_albums=");
-                stringBuilder.Append(string.Join(',', albums));
-            }
-
-            return stringBuilder.ToString();
         }
 
         /// <summary>

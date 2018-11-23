@@ -8,6 +8,8 @@ const styles = ({ palette, spacing, breakpoints }: Theme) => createStyles({
         marginTop: 15,
         padding: 20,
         maxWidth: 700,
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
 });
 
